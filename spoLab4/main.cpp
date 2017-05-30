@@ -1,6 +1,6 @@
-#include "Lexer.h"
-#include "Parser.h"
-#include "Interpreter.h"
+#include "lexer.h"
+#include "parser.h"
+#include "interpreter.h"
 
 void main()
 {
