@@ -1,0 +1,13 @@
+for (i = 0; i < 5; i++)
+{
+	a = a * 10;
+	b = b / 2;
+	if (false > true)
+	{
+		par = 500;
+	}
+	if (true > 10)
+	{
+		par1 = 7 - 4;
+	}
+}

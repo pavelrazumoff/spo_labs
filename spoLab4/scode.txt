@@ -1,0 +1,16 @@
+if (11 < 7)
+{
+	par = 50;
+	if (true > false)
+	{
+		par1 = 4;
+		for (i = 0; i < 10; i++)
+		{
+			par1 = par * 2;
+			if (par1 > par)
+			{
+				par1 = par;
+			}
+		}
+	}
+}
