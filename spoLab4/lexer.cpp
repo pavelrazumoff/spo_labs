@@ -1,15 +1,15 @@
-#include "Lexer.h"
+#include "lexer.h"
 
 vector<token_pair> Lexer::getTokens(string fname)
 {
 	string s_code = readSourceCodeFromFile(fname);
-	vector<Lexer::tokens> regex = getRegexFromFile();
-	vector<token_pair> tokens;
+	vector<Tokens> regex = getRegexFromFile();
+	vector<token_pair> _tokens;
 
 	while (!s_code.empty())
 	{
 		eraseWhitespaces(s_code);
-		vector<Lexer::tokens> tmpTokens;
+		vector<Tokens> tmpTokens;
 		string buffer;
 		bool solved = false;
 		if (s_code.size() != 0)
@@ -26,16 +26,16 @@ vector<token_pair> Lexer::getTokens(string fname)
 					{
 						buffer.push_back(s_code[0]);
 						cout << "\n\nError! Unknown symbol \"" << buffer << "\"\n";
-						tokens.clear();
-						return tokens;
+						_tokens.clear();
+						return _tokens;
 					}
-					Lexer::tokens tempResult = tmpTokens[0];
+					Tokens tempResult = tmpTokens[0];
 					for (int i = 1; i < tmpTokens.size(); ++i)
 					{
 						if (tmpTokens[i].priority < tempResult.priority)
 							tempResult = tmpTokens[i];
 					}
-					tokens.push_back({ tempResult.name, buffer });
+					_tokens.push_back({ tempResult.name, buffer });
 					solved = true;
 				}
 				else
@@ -44,12 +44,12 @@ vector<token_pair> Lexer::getTokens(string fname)
 		}
 	}
 
-	return tokens;
+	return _tokens;
 }
 
-vector<Lexer::tokens> Lexer::getRegexFromFile()
+vector<Tokens> Lexer::getRegexFromFile()
 {
-	vector<Lexer::tokens> result;
+	vector<Tokens> result;
 	ifstream regexfile("regex.txt");
 
 	if (!regexfile.is_open())
@@ -81,16 +81,16 @@ vector<Lexer::tokens> Lexer::getRegexFromFile()
 
 			rx_pr = atoi(regx.c_str());
 
-			result.push_back(Lexer::tokens{ rgx_name , rgx_rx , rx_pr });
+			result.push_back(Tokens{ rgx_name , rgx_rx , rx_pr });
 		}
 		regexfile.close();
 	}
 	return result;
 }
 
-vector<Lexer::tokens> Lexer::findMatch(string str, vector<Lexer::tokens> & myRegex)
+vector<Tokens> Lexer::findMatch(string str, vector<Tokens> & myRegex)
 {
-	vector<tokens> match;
+	vector<Tokens> match;
 	for (int j = 0; j < myRegex.size(); ++j)
 	{
 		tr1::regex rx(myRegex[j].rx);

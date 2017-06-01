@@ -1,10 +1,11 @@
 #pragma once
-#include "Parser.h"
+#include "parser.h"
 
 class Interpreter
 {
 public:
-	vector<string> get_reverse_polish_notation(vector<token_pair> code);
+	void			calc_reverse_polish_notation(vector<token_pair> code);
+	void			printRPN();
 private:
-	vector<string> getSimpleRPN(vector<token_pair> code);
+	vector<string>	revPolNotation;
 };

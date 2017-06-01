@@ -1,9 +1,7 @@
-#include "Interpreter.h"
+#include "interpreter.h"
 
-vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
+void Interpreter::calc_reverse_polish_notation(vector<token_pair> code)
 {
-	vector<string> revpn;
-
 	vector<token_pair> buffer;
 	vector<token_pair> buffer1;
 	vector<token_pair> buffer2;
@@ -25,7 +23,7 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 			else
 			{
 				if (code[i].name == "DIGIT" || code[i].name == "VAR" || code[i].name == "UNA_ARITHM_OPER")
-					revpn.push_back(code[i].value);
+					revPolNotation.push_back(code[i].value);
 				else
 				{
 					if (buffer.empty() && code[i].value != "=" && code[i].value != "}" && code[i].value != ";" && code[i].value != "end")
@@ -38,7 +36,7 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 							{
 								if (buffer.back().name == "BIN_ARITHM_OPER")
 								{
-									revpn.push_back(buffer.back().value);
+									revPolNotation.push_back(buffer.back().value);
 									buffer.pop_back();
 								}
 								else break;
@@ -50,7 +48,7 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 						{
 							if (buffer.back().value == "*" || buffer.back().value == "/")
 							{
-								revpn.push_back(buffer.back().value);
+								revPolNotation.push_back(buffer.back().value);
 								buffer.pop_back();
 							}
 							else
@@ -61,7 +59,7 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 						{
 							while (buffer.back().value != "(")
 							{
-								revpn.push_back(buffer.back().value);
+								revPolNotation.push_back(buffer.back().value);
 								buffer.pop_back();
 							}
 
@@ -70,9 +68,9 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 							
 							if (buffer2.back().value == "if" && buffer2.size() > labels.size())
 							{
-								labels.push_back(revpn.size());
-								revpn.push_back("void_label");
-								revpn.push_back("!F");
+								labels.push_back(revPolNotation.size());
+								revPolNotation.push_back("void_label");
+								revPolNotation.push_back("!F");
 							}
 
 							if (!buffer1.empty() && buffer1.back().value != "{")
@@ -88,7 +86,7 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 							{
 								if (buffer1.back().value == "{" && buffer2.back().name == "KW_IF")
 								{
-									revpn[labels.back()] = "@" + to_string(revpn.size() + 1);
+									revPolNotation[labels.back()] = "@" + to_string(revPolNotation.size() + 1);
 									labels.pop_back();
 									buffer1.pop_back();
 									buffer2.pop_back();
@@ -97,13 +95,13 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 								{
 									if (buffer1.back().value == "{" && buffer2.back().name == "KW_FOR")
 									{
-										revpn.push_back("@" + to_string(labels.back() + 1));
-										revpn.push_back("!");
+										revPolNotation.push_back("@" + to_string(labels.back() + 1));
+										revPolNotation.push_back("!");
 										labels.pop_back();
 										buffer1.pop_back();
 										buffer2.pop_back();
 
-										revpn[labels.back()] = "@" + to_string(revpn.size() + 1);
+										revPolNotation[labels.back()] = "@" + to_string(revPolNotation.size() + 1);
 										labels.pop_back();
 										buffer1.pop_back();
 										buffer2.pop_back();
@@ -119,13 +117,13 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 						{
 							while (!buffer.empty() && buffer.back().value != "(")
 							{
-								revpn.push_back(buffer.back().value);
+								revPolNotation.push_back(buffer.back().value);
 								buffer.pop_back();
 							}
 
 							while (!buffer1.empty() && buffer1.back().value != "{")
 							{
-								revpn.push_back(buffer1.back().value);
+								revPolNotation.push_back(buffer1.back().value);
 								buffer1.pop_back();
 							}
 
@@ -134,7 +132,7 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 								if (buffer2.back().name == "KW_FOR")
 								{
 									if (buffer2.size() > labels.size())
-										labels.push_back(revpn.size());
+										labels.push_back(revPolNotation.size());
 									else
 									{
 										if (buffer2.size() == labels.size())
@@ -142,9 +140,9 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 											if (buffer2.back().value == "for")
 											{
 												buffer2.push_back({ "KW_IF", "if" });
-												labels.push_back(revpn.size());
-												revpn.push_back("void_label");
-												revpn.push_back("!F");
+												labels.push_back(revPolNotation.size());
+												revPolNotation.push_back("void_label");
+												revPolNotation.push_back("!F");
 											}
 										}
 									}
@@ -156,14 +154,14 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 						{
 							while (!buffer.empty())
 							{
-								revpn.push_back(buffer.back().value);
+								revPolNotation.push_back(buffer.back().value);
 								buffer.pop_back();
 							}
 							while (!buffer2.empty())
 							{
 								if (buffer2.back().name == "KW_IF")
 								{
-									revpn[labels.back()] = "@" + to_string(revpn.size() + 1);
+									revPolNotation[labels.back()] = "@" + to_string(revPolNotation.size() + 1);
 									labels.pop_back();
 									buffer2.pop_back();
 								}
@@ -174,77 +172,11 @@ vector<string> Interpreter::get_reverse_polish_notation(vector<token_pair> code)
 			}
 		}
 	}
-
-	return revpn;
 }
 
-vector<string> Interpreter::getSimpleRPN(vector<token_pair> code)
+void Interpreter::printRPN()
 {
-	vector<string> rpn;
-	vector<token_pair> buffer;
-	code.push_back({ "end", "end" });
-
-	for (int i = 0; i < code.size(); ++i)
-	{
-		if (code[i].name == "DIGIT" || code[i].name == "VAR")
-			rpn.push_back(code[i].value);
-		else
-		{
-			if (buffer.empty())
-				buffer.push_back(code[i]);
-			else
-			{
-				if (code[i].value == "+" || code[i].value == "-" || code[i].value == ">" || code[i].value == "<" || code[i].value == "==" || code[i].value == "!=")
-				{
-					while (!buffer.empty())
-					{
-						if (buffer.back().name == "BIN_ARITHM_OPER")
-						{
-							rpn.push_back(buffer.back().value);
-							buffer.pop_back();
-						}
-						else break;
-					}
-					buffer.push_back(code[i]);
-				}
-
-				if (code[i].value == "*" || code[i].value == "/")
-				{
-					if (buffer.back().value == "*" || buffer.back().value == "/")
-					{
-						rpn.push_back(buffer.back().value);
-						buffer.pop_back();
-					}
-					else
-						buffer.push_back(code[i]);
-				}
-
-				if (code[i].value == ")")
-				{
-					while (buffer.back().value != "(")
-					{
-						rpn.push_back(buffer.back().value);
-						buffer.pop_back();
-					}
-
-					if (buffer.back().value == "(")
-						buffer.pop_back();
-				}
-
-				if (code[i].value == "(")
-					buffer.push_back(code[i]);
-
-				if (code[i].value == "end")
-				{
-					while (!buffer.empty())
-					{
-						rpn.push_back(buffer.back().value);
-						buffer.pop_back();
-					}
-				}
-			}
-		}
-	}
-
-	return rpn;
+	cout << "\n";
+	for (int i = 0; i < revPolNotation.size(); ++i)
+		cout << i << " " << revPolNotation[i] << "\n";
 }

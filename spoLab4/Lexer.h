@@ -1,12 +1,5 @@
 #pragma once
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <regex>
-
-using namespace std;
+#include "header.h"
 
 struct token_pair
 {
@@ -14,19 +7,20 @@ struct token_pair
 	string value;
 };
 
+struct Tokens
+{
+	string name;
+	string rx;
+	int priority;
+};
+
 class Lexer
 {
 public:
-	vector<token_pair> getTokens(string fname);
-	struct tokens
-	{
-		string name;
-		string rx;
-		int priority;
-	};
-	vector<Lexer::tokens> getRegexFromFile();
-	vector<Lexer::tokens> findMatch(string str, vector<Lexer::tokens> & myRegex);
+	vector<token_pair>		getTokens(string fname);
+	vector<Tokens>			getRegexFromFile();
 private:
-	void eraseWhitespaces(string & str);
-	string readSourceCodeFromFile(string fname);
+	vector<Tokens>			findMatch(string str, vector<Tokens> & myRegex);
+	void					eraseWhitespaces(string & str);
+	string					readSourceCodeFromFile(string fname);
 };

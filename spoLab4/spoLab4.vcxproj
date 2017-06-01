@@ -145,6 +145,7 @@
     <ClCompile Include="parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header.h" />
     <ClInclude Include="interpreter.h" />
     <ClInclude Include="lexer.h" />
     <ClInclude Include="parser.h" />

@@ -17,8 +17,7 @@ void main()
 		cout << "\nLexer didn't find errors.\n";
 
 		Parser parser;
-		bool correct = parser.checkSyntax(tokens);
-		if (correct)
+		if (parser.checkSyntax(tokens))
 			cout << "\nParser didn't find errors.\n";
 		else
 			cout << "\nParser found an error.\n";
@@ -27,11 +26,8 @@ void main()
 		cout << "\nLexer found an error.\n";
 
 	Interpreter interpr;
-	vector<string> rpn = interpr.get_reverse_polish_notation(tokens);
-
-	cout << "\n";
-	for (int i = 0; i < rpn.size(); ++i)
-		cout << i + 1 << " " << rpn[i] << "\n";
+	interpr.calc_reverse_polish_notation(tokens);
+	interpr.printRPN();
 
 	cout << "\n";
 	system("pause");

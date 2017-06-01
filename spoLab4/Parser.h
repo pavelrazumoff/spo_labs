@@ -1,7 +1,7 @@
 #pragma once
-#include "Lexer.h"
+#include "lexer.h"
 
-struct token
+struct Token
 {
 	string name;
 	string rx;
@@ -11,7 +11,7 @@ class Parser
 {
 public:
 	bool checkSyntax(vector<token_pair> tokens);
-	vector<token> getSyntaxRegex();
+	vector<Token> getSyntaxRegex();
 private:
-	vector<token> getRegexFromFile();
+	vector<Token> getRegexFromFile();
 };

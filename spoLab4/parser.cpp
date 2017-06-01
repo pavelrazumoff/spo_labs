@@ -7,9 +7,9 @@ bool Parser::checkSyntax(vector<token_pair> tokens)
 		tokens_in_str = tokens_in_str + tokens[i].name + " ";
 
 	tokens_in_str.erase(tokens_in_str.size() - 1, 1);
-	cout << "tokensInStr --> ~" << tokens_in_str << "~\n";
+	cout << "tokens = ~" << tokens_in_str << "~\n";
 
-	vector<token> syntax_rx = getSyntaxRegex();
+	vector<Token> syntax_rx = getSyntaxRegex();
 
 	//for (int i = 0; i < syntaxRx.size(); ++i)
 		//cout << syntaxRx[i].name << " == " << syntaxRx[i].rx << "\n";
@@ -29,9 +29,25 @@ bool Parser::checkSyntax(vector<token_pair> tokens)
 	return tr1::regex_search(tokens_in_str.c_str(), rx);
 }
 
-vector<token> Parser::getRegexFromFile()
+vector<Token> Parser::getSyntaxRegex()
 {
-	vector<token> result;
+	vector<Token> syntax_rx = getRegexFromFile();
+
+	for (int k = 0; k < 5; ++k)
+		for (int i = 0; i < syntax_rx.size(); ++i)
+			for (int j = 0; j < syntax_rx.size(); ++j)
+			{
+				tr1::regex rxN(syntax_rx[j].name);
+				syntax_rx[i].rx = tr1::regex_replace(syntax_rx[i].rx.c_str(), rxN, syntax_rx[j].rx);
+			}
+	syntax_rx[0].rx = "^" + syntax_rx[0].rx + "$";
+
+	return syntax_rx;
+}
+
+vector<Token> Parser::getRegexFromFile()
+{
+	vector<Token> result;
 	ifstream rx_file("syntax.txt");
 
 	if (!rx_file.is_open())
@@ -41,7 +57,7 @@ vector<token> Parser::getRegexFromFile()
 	}
 	else
 	{
-		token syntax;
+		Token syntax;
 		while (!rx_file.eof())
 		{
 			string regx;
@@ -60,25 +76,9 @@ vector<token> Parser::getRegexFromFile()
 			regx.erase(0, name.str().size() + 2);
 			rx_rx = regx;
 			
-			result.push_back(token{ rx_name , rx_rx });
+			result.push_back(Token{ rx_name , rx_rx });
 		}
 		rx_file.close();
 	}
 	return result;
-}
-
-vector<token> Parser::getSyntaxRegex()
-{
-	vector<token> syntax_rx = getRegexFromFile();
-
-	for (int k = 0; k < 5; ++k)
-		for (int i = 0; i < syntax_rx.size(); ++i)
-			for (int j = 0; j < syntax_rx.size(); ++j)
-			{
-				tr1::regex rxN(syntax_rx[j].name);
-				syntax_rx[i].rx = tr1::regex_replace(syntax_rx[i].rx.c_str(), rxN, syntax_rx[j].rx);
-			}
-	syntax_rx[0].rx = "^" + syntax_rx[0].rx + "$";
-
-	return syntax_rx;
 }
