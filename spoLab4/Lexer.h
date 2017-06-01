@@ -18,8 +18,8 @@ class Lexer
 {
 public:
 	vector<token_pair>		getTokens(string fname);
-	vector<Tokens>			getRegexFromFile();
 private:
+	vector<Tokens>			getRegexFromFile();
 	vector<Tokens>			findMatch(string str, vector<Tokens> & myRegex);
 	void					eraseWhitespaces(string & str);
 	string					readSourceCodeFromFile(string fname);

@@ -1,7 +1,12 @@
-﻿  parser.cpp
-d:\visual studio projects\university\c (c++)\spolab4\spolab4\parser.cpp(6): warning C4018: '<': signed/unsigned mismatch
-d:\visual studio projects\university\c (c++)\spolab4\spolab4\parser.cpp(18): warning C4018: '<': signed/unsigned mismatch
-d:\visual studio projects\university\c (c++)\spolab4\spolab4\parser.cpp(37): warning C4018: '<': signed/unsigned mismatch
-d:\visual studio projects\university\c (c++)\spolab4\spolab4\parser.cpp(38): warning C4018: '<': signed/unsigned mismatch
+﻿  main.cpp
+  Generating Code...
+  Compiling...
+  lexer.cpp
+d:\visual studio projects\university\c (c++)\spolab4\spolab4\lexer.cpp(33): warning C4018: '<': signed/unsigned mismatch
+d:\visual studio projects\university\c (c++)\spolab4\spolab4\lexer.cpp(94): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  parser.cpp
+  interpreter.cpp
   spoLab4.vcxproj -> D:\Visual Studio Projects\University\C (C++)\spoLab4\Debug\spoLab4.exe
   spoLab4.vcxproj -> D:\Visual Studio Projects\University\C (C++)\spoLab4\Debug\spoLab4.pdb (Partial PDB)
